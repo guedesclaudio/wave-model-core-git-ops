@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wave-model-core
+  namespace: wave-model-core
   labels:
     app: wave-model-core
 spec:
@@ -15,12 +16,37 @@ spec:
         app: wave-model-core
     spec:
       containers:
-      - name: wave-model-core
-        image: meuusuario/wave-model-core:latest
-        ports:
-        - containerPort: 8000
-        envFrom:
-        - configMapRef:
-            name: wave-model-core-config
-        - secretRef:
-            name: wave-model-core-secret
+        - name: wave-model-core
+          image: guedesclaudio/wave-model-core:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: wave-model-core-config
+            - secretRef:
+                name: wave-model-core-secrets
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: wave-model-core-config
+  namespace: wave-model-core
 data:
   APP_ENV: "dev"
   DEBUG: "true"
