@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wave-model-core
+  labels:
+    app: wave-model-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wave-model-core
+  template:
+    metadata:
+      labels:
+        app: wave-model-core
+    spec:
+      containers:
+      - name: wave-model-core
+        image: meuusuario/wave-model-core:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: wave-model-core-config
+        - secretRef:
+            name: wave-model-core-secret
