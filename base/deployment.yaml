@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: wave-model-core
-          image: guedesclaudio/wave-model-core:latest
+          image: guedesclaudio/wave-model-core:5be630f-20250820-000949
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
